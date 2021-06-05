@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+
+{% block page_head %}Cognitive Testing{% endblock %}
+
+{% block content %}
+<div class="content">
+
+	<div class="row" style="margin-top:15px;">
+		<div class="col-md-12">
+			<div class="card">
+				<div class="card-header">
+					<h4 class="card-title">Test Results:</h4>
+				</div>
+				<div class="card-body">
+					<div class="table">
+						<table id="program_table" class="table table-responsive" data-toggle="table" data-pagination="true">
+							<thead class="text-primary">
+								<th data-sortable="true" data-field="1">Test Name</th>
+								<th data-sortable="true" data-field="2">Accuracy</th>
+								<th data-sortable="true" data-field="3">Average Reaction Time</th>
+								<th data-field=""></th>
+							</thead>
+							<tbody>
+								{% for test in tests %}
+								<tr data-title="bootstrap table">
+									<td>
+										{{ test.testname }}
+									</td>
+									<td>
+										{{ test.score }}%
+									</td>
+									<td>
+										{{ test.reaction_time }} ms
+									</td>
+									<td>
+										<a href="{{ url_for('main.delete_test', test_id=test.id) }}">Remove score</a>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-4">
+			<form id="selectTest">
+				<h4>Select a test:</h4>
+				<label class="radio">
+					<input type="radio" name="selectTest" data-toggle="radio" id="optionsRadios1" value="example">
+					<i></i>Example
+				</label>
+				<label class="radio">   
+					<input type="radio" name="selectTest" data-toggle="radio" id="optionsRadios2" value="subitizing">
+					<i></i>Subitizing
+				</label>
+				<label class="radio">   
+					<input type="radio" name="selectTest" data-toggle="radio" id="optionsRadios3" value="nback">
+					<i></i>2-back
+				</label>
+				<label class="radio">   
+					<input type="radio" name="selectTest" data-toggle="radio" id="optionsRadios4" value="phone">
+					<i></i>phone
+				</label>
+			</form>
+		</div>
+		<div class="col-md-8">
+			<div class="test" name="example">
+				<h4>Example</h4>
+				<div class="center" style="text-align:center;margin-bottom:25px;">
+						<a href="{{url_for('main.test1')}}" class="btn btn-primary btn-lg">Start test</a></p>
+					</div>
+				<p>This is an example test. Time taken: 20 seconds<p>
+			</div>
+			<div class="test" name="subitizing">
+				<h4>Subitizing</h4>
+				<div class="center" style="text-align:center;margin-bottom:25px;">
+									<a href="{{url_for('main.subitizing')}}" class="btn btn-primary btn-lg">Start test</a>
+								</div>
+				<p>Subitizing is the rapid, accurate, and confident judgments of numbers performed for small numbers of items. Time taken: 1 minute</p>
+								<a href="{{ url_for('static', filename='papers/subitizing_kaufman_1949.pdf') }}">Paper</a>
+			</div>
+			<div class="test" name="nback">
+				<h4>2-back</h4>
+				<div class="center" style="text-align:center;margin-bottom:25px;">
+									<a href="{{url_for('main.nback')}}" class="btn btn-primary btn-lg">Start test</a>
+								</div>
+				<p>The n-back task is a continuous performance task that is commonly used to measure working memory. 2-back, as in this test, means two turns back. Time taken: 1 minute</p>
+								<a href="{{ url_for('static', filename='papers/carlson1998.pdf') }}">Paper</a>
+			</div>
+			<div class="test" name="phone">
+				<h4>2-back</h4>
+				<div class="center" style="text-align:center;margin-bottom:25px;">
+									<a href="{{url_for('main.phone')}}" class="btn btn-primary btn-lg">Start test</a>
+								</div>
+				<p>How good are you at memorizing phone numbers quickly?</p>
+			</div>
+		</div>
+	</div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+	$(document).ready(function() {
+		$(".test").hide();
+		$('#selectTest').change(function() {
+			selected_value = $("input[name='selectTest']:checked").val();
+			$(".test").hide();
+			$("div[name='" + selected_value + "']").show()
+		});
+	});
+</script>
+{% endblock %}
+
+
